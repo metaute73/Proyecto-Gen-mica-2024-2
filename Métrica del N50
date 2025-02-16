@@ -1,0 +1,130 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMDM+HmBrJkOk6yJnIxFTNf",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/metaute73/Proyecto-Gen-mica-2024-2/blob/main/M%C3%A9trica%20del%20N50\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Bjvj4yfggXTr",
+        "outputId": "dce3b903-2d3a-4893-8313-77e9529b2eb7"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Resultados del cálculo N50:\n",
+            "               Archivo       N50\n",
+            "0   LengthDepth_13.csv   56268.0\n",
+            "1   LengthDepth_18.csv   91361.0\n",
+            "2   LengthDepth_11.csv   95882.0\n",
+            "3    LengthDepth_6.csv   72281.0\n",
+            "4   LengthDepth_16.csv   57825.0\n",
+            "5    LengthDepth_8.csv   36569.0\n",
+            "6   LengthDepth_32.csv   79290.0\n",
+            "7   LengthDepth_33.csv  318161.0\n",
+            "8    LengthDepth_3.csv   96398.0\n",
+            "9    LengthDepth_4.csv   31766.0\n",
+            "10   LengthDepth_1.csv  244542.0\n",
+            "11   LengthDepth_9.csv  142209.0\n",
+            "12   LengthDepth_2.csv   55499.0\n",
+            "13  LengthDepth_35.csv  697808.0\n",
+            "14  LengthDepth_34.csv   93618.0\n",
+            "15  LengthDepth_22.csv  324089.0\n",
+            "16  LengthDepth_19.csv  127980.0\n",
+            "17  LengthDepth_28.csv   95695.0\n",
+            "18  LengthDepth_25.csv  331521.0\n",
+            "19   LengthDepth_7.csv  171009.0\n",
+            "20  LengthDepth_24.csv  122157.0\n",
+            "21  LengthDepth_20.csv  301282.0\n",
+            "22  LengthDepth_30.csv   37360.0\n",
+            "23   LengthDepth_5.csv  155621.0\n",
+            "24  LengthDepth_31.csv   69077.0\n",
+            "25  LengthDepth_36.csv   14399.0\n",
+            "26  LengthDepth_27.csv  318819.0\n",
+            "27  LengthDepth_14.csv   72120.0\n",
+            "28  LengthDepth_26.csv  433390.0\n",
+            "29  LengthDepth_15.csv  260004.0\n",
+            "30  LengthDepth_10.csv  239307.0\n",
+            "31  LengthDepth_23.csv  250982.0\n",
+            "32  LengthDepth_12.csv  219496.0\n",
+            "33  LengthDepth_21.csv  210089.0\n",
+            "34  LengthDepth_29.csv   51417.0\n",
+            "35  LengthDepth_17.csv  132228.0\n",
+            "\n",
+            "Cálculo completado. Descarga los resultados desde /content/resultados_n50.csv\n"
+          ]
+        }
+      ],
+      "source": [
+        "import pandas as pd\n",
+        "import os\n",
+        "\n",
+        "# Función para calcular N50\n",
+        "def calcular_n50(df):\n",
+        "    df_sorted = df.sort_values(by='Length', ascending=False)\n",
+        "    total_length = df_sorted['Length'].sum()\n",
+        "    half_length = total_length / 2\n",
+        "\n",
+        "    cumulative_length = 0\n",
+        "    for length in df_sorted['Length']:\n",
+        "        cumulative_length += length\n",
+        "        if cumulative_length >= half_length:\n",
+        "            return length\n",
+        "\n",
+        "# Ruta de archivos subidos en Colab\n",
+        "ruta = '/content/'  # Carpeta donde se suben archivos en Google Colab\n",
+        "\n",
+        "# Crear una lista para almacenar resultados\n",
+        "resultados = []\n",
+        "\n",
+        "# Recorrer todos los archivos CSV subidos\n",
+        "for archivo in os.listdir(ruta):\n",
+        "    if archivo.endswith('.csv'):\n",
+        "        df = pd.read_csv(os.path.join(ruta, archivo), delimiter='\\t')\n",
+        "        n50 = calcular_n50(df)\n",
+        "        resultados.append({'Archivo': archivo, 'N50': n50})\n",
+        "\n",
+        "# Convertir resultados a DataFrame\n",
+        "df_resultados = pd.DataFrame(resultados)\n",
+        "\n",
+        "# Guardar los resultados en un CSV en Colab\n",
+        "df_resultados.to_csv('/content/resultados_n50.csv', index=False)\n",
+        "\n",
+        "# Imprimir los resultados en pantalla\n",
+        "print(\"Resultados del cálculo N50:\")\n",
+        "print(df_resultados)\n",
+        "\n",
+        "print(\"\\nCálculo completado. Descarga los resultados desde /content/resultados_n50.csv\")"
+      ]
+    }
+  ]
+}
