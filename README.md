@@ -42,3 +42,5 @@ Este proyecto se distribuye bajo la licencia MIT.
 GD: <a href="https://colab.research.google.com/github/metaute73/Proyecto-Gen-mica-2024-2/blob/main/Procedimiento_Final.ipynb#scrollTo=uRwOkielnDRF"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 Para descargar el script ir a la carpeta de **Sprint 4 Clasificación Final**, el archivo se llama *genome.py*
+Ejecución:
+**"python genome.py -in [nombre del archivo].csv -out True"**
